@@ -1,0 +1,23 @@
+{
+  "name": "cas-platform",
+  "version": "1.0.0",
+  "private": true,
+  "workspaces": [
+    "packages/*",
+    "apps/*"
+  ],
+  "scripts": {
+    "build": "npm run build --workspaces",
+    "dev:api": "npm run start:dev --workspace=@cas/api",
+    "dev:web": "npm run dev --workspace=@cas/web",
+    "shift:setup": "npm run shift:setup --workspace=@cas/api",
+    "shift:seed": "npm run shift:seed --workspace=@cas/api",
+    "shift:reset": "npm run shift:reset --workspace=@cas/api",
+    "test": "npm run test --workspaces --if-present",
+    "test:e2e": "npm run test:e2e --workspace=@cas/web --if-present"
+  },
+  "devDependencies": {
+    "prettier": "^3.2.5",
+    "typescript": "^5.4.5"
+  }
+}

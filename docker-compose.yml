@@ -1,0 +1,65 @@
+version: '3.8'
+
+services:
+  redis:
+    image: redis:7-alpine
+    container_name: cas_redis
+    restart: always
+    ports:
+      - '6379:6379'
+    volumes:
+      - cas_redisdata:/data
+
+  mailhog:
+    image: mailhog/mailhog:latest
+    container_name: cas_mailhog
+    restart: always
+    ports:
+      - '1025:1025' # SMTP port
+      - '8025:8025' # Web UI port
+
+  api:
+    build:
+      context: .
+      dockerfile: apps/api/Dockerfile
+    container_name: cas_api
+    restart: always
+    depends_on:
+      redis:
+        condition: service_started
+      mailhog:
+        condition: service_started
+    environment:
+      - NODE_ENV=production
+      - PORT=4000
+      - SQLITE_PATH=/app/data/cas.db
+      - REDIS_HOST=redis
+      - REDIS_PORT=6379
+      - SMTP_HOST=mailhog
+      - SMTP_PORT=1025
+      - SMTP_FROM="CAS Digital Platform <no-reply@adani.com>"
+      - AUTH_MODE=dev
+      - JWT_SECRET=cas_digital_platform_secret_key_2026_super_secure_jwt
+      - JWT_EXPIRES_IN=7d
+      - UPLOAD_DIR=/app/uploads
+    ports:
+      - '4000:4000'
+    volumes:
+      - cas_uploads:/app/uploads
+      - cas_data:/app/data
+
+  web:
+    build:
+      context: .
+      dockerfile: apps/web/Dockerfile
+    container_name: cas_web
+    restart: always
+    depends_on:
+      - api
+    ports:
+      - '3000:3000'
+
+volumes:
+  cas_redisdata:
+  cas_uploads:
+  cas_data:

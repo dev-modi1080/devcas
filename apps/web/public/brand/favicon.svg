@@ -1,0 +1,12 @@
+<svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 100 100">
+  <defs>
+    <linearGradient id="brandGrad" x1="0%" y1="0%" x2="100%" y2="100%">
+      <stop offset="0%" stop-color="#158CC9" />
+      <stop offset="35%" stop-color="#2670DC" />
+      <stop offset="70%" stop-color="#443FFC" />
+      <stop offset="100%" stop-color="#A510A1" />
+    </linearGradient>
+  </defs>
+  <rect width="100" height="100" rx="20" fill="url(#brandGrad)" />
+  <text x="50" y="62" font-family="Inter, sans-serif" font-weight="700" font-size="40" fill="#ffffff" text-anchor="middle">CAS</text>
+</svg>

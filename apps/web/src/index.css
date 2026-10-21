@@ -1,0 +1,98 @@
+/* ==========================================================================
+   ADANI CORPORATE THEME - CAS DIGITAL PLATFORM
+   Design tokens & CSS variables
+   Replace with the official Adani brand font when available.
+   ========================================================================== */
+
+:root {
+  /* Brand Gradient & Identity Tokens */
+  --brand-1: #158cc9;
+  --brand-2: #2670dc;
+  --brand-3: #443ffc;
+  --brand-4: #a510a1;
+  --brand-gradient: linear-gradient(90deg, #158cc9 0%, #2670dc 33%, #443ffc 66%, #a510a1 100%);
+
+  /* Primary Palette */
+  --primary: #2670dc;
+  --primary-hover: #443ffc;
+  --primary-contrast: #ffffff;
+
+  /* Typography */
+  --font-family: "Inter", "Poppins", "Segoe UI", Roboto, Arial, sans-serif;
+  --text-primary: #14171f;
+  --text-secondary: #5b6475;
+  --line-height: 1.6;
+
+  /* Surfaces & Borders (Light Mode Default) */
+  --bg-page: #f6f7fb;
+  --bg-surface: #ffffff;
+  --border-color: #e6e8ef;
+  --radius-card: 12px;
+  --card-shadow: 0 1px 3px rgba(0, 0, 0, 0.04), 0 1px 2px rgba(0, 0, 0, 0.02);
+
+  /* Status Colors */
+  --status-success: #16a34a;
+  --status-success-bg: #dcfce7;
+  --status-warning: #d97706;
+  --status-warning-bg: #fef3c7;
+  --status-danger: #dc2626;
+  --status-danger-bg: #fee2e2;
+  --status-info: #0284c7;
+  --status-info-bg: #e0f2fe;
+
+  /* Touch targets */
+  --touch-target-min: 44px;
+}
+
+[data-theme='dark'] {
+  --bg-page: #0f172a;
+  --bg-surface: #1e293b;
+  --border-color: #334155;
+  --text-primary: #f8fafc;
+  --text-secondary: #94a3b8;
+  --card-shadow: 0 1px 3px rgba(0, 0, 0, 0.3);
+}
+
+* {
+  box-sizing: border-box;
+  margin: 0;
+  padding: 0;
+}
+
+body {
+  font-family: var(--font-family);
+  background-color: var(--bg-page);
+  color: var(--text-primary);
+  line-height: var(--line-height);
+  font-size: 16px;
+  text-rendering: optimizeLegibility;
+  -webkit-font-smoothing: antialiased;
+}
+
+/* Adani Corporate Top Accent Line */
+.brand-accent-line {
+  height: 4px;
+  background: var(--brand-gradient);
+  width: 100%;
+}
+
+/* Accessibility: Visible Focus Rings */
+:focus-visible {
+  outline: 2px solid var(--primary);
+  outline-offset: 2px;
+}
+
+/* 44px Minimum Touch Targets for Form Controls */
+button,
+input,
+select,
+.MuiButtonBase-root {
+  min-height: 38px;
+}
+
+@media (max-width: 600px) {
+  button,
+  .MuiButtonBase-root {
+    min-height: var(--touch-target-min);
+  }
+}
