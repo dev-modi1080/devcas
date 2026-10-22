@@ -43,12 +43,6 @@
       }
     },
     {
-      "source": "/(.*\\.[a-zA-Z0-9]+$)",
-      "destination": {
-        "service": "web"
-      }
-    },
-    {
       "source": "/(.*)",
       "destination": {
         "service": "web",
