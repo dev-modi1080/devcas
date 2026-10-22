@@ -19,9 +19,40 @@
       }
     },
     {
-      "source": "/(.*)",
+      "source": "/assets/(.*)",
       "destination": {
         "service": "web"
+      }
+    },
+    {
+      "source": "/brand/(.*)",
+      "destination": {
+        "service": "web"
+      }
+    },
+    {
+      "source": "/favicon.svg",
+      "destination": {
+        "service": "web"
+      }
+    },
+    {
+      "source": "/robots.txt",
+      "destination": {
+        "service": "web"
+      }
+    },
+    {
+      "source": "/(.*\\.[a-zA-Z0-9]+$)",
+      "destination": {
+        "service": "web"
+      }
+    },
+    {
+      "source": "/(.*)",
+      "destination": {
+        "service": "web",
+        "path": "/index.html"
       }
     }
   ]
