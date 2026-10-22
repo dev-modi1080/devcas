@@ -12,6 +12,7 @@ import { NotificationsModule } from './modules/notifications/notifications.modul
 import { FilesModule } from './modules/files/files.module';
 import { SettingsModule } from './modules/settings/settings.module';
 import { JobsModule } from './modules/jobs/jobs.module';
+import { AppController } from './app.controller';
 
 @Module({
   imports: [
@@ -32,5 +33,6 @@ import { JobsModule } from './modules/jobs/jobs.module';
     SettingsModule,
     JobsModule,
   ],
+  controllers: [AppController],
 })
 export class AppModule {}
