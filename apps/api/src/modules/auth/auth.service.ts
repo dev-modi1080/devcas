@@ -14,7 +14,7 @@ export class AuthService {
       throw new BadRequestException('DEV_LOGIN is only available when AUTH_MODE=dev');
     }
 
-    return this.db.user.findMany({
+    let users = await this.db.user.findMany({
       where: { active: true },
       include: {
         userBusinesses: { include: { business: true } },
@@ -23,6 +23,26 @@ export class AuthService {
       },
       orderBy: { role: 'asc' },
     });
+
+    if (users.length === 0) {
+      try {
+        const { seed } = await import('../../shift/seed');
+        await seed(this.db);
+        users = await this.db.user.findMany({
+          where: { active: true },
+          include: {
+            userBusinesses: { include: { business: true } },
+            userLocations: { include: { location: true } },
+            userSiteLocations: { include: { siteLocation: true } },
+          },
+          orderBy: { role: 'asc' },
+        });
+      } catch (err) {
+        // ignore seed error
+      }
+    }
+
+    return users;
   }
 
   async devLogin(userId: string) {

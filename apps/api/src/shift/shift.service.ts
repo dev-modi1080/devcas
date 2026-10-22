@@ -203,6 +203,17 @@ export class ShiftService implements OnModuleInit, OnModuleDestroy {
 
   async onModuleInit(): Promise<void> {
     this.ensureSchema();
+    try {
+      const userCount = await this.user.count();
+      if (userCount === 0) {
+        this.logger.log('Database empty. Seeding initial CAS dataset...');
+        const { seed } = await import('./seed');
+        await seed(this);
+        this.logger.log('Initial CAS dataset seeded.');
+      }
+    } catch (err) {
+      this.logger.warn(`Auto-seeding check: ${err}`);
+    }
   }
 
   async onModuleDestroy(): Promise<void> {
