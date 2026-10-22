@@ -1,5 +1,9 @@
 node_modules
-dist
+apps/api/dist
+apps/web/dist
+dist/
+!packages/shared/dist
+!packages/shared/dist/**
 .env
 .env*
 *.env

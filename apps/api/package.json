@@ -6,10 +6,11 @@
     "node": ">=22.5.0"
   },
   "scripts": {
-    "prebuild": "npm --prefix ../../packages/shared run build",
-    "build": "nest build",
+    "build:shared": "tsc -p ../../packages/shared",
+    "prebuild": "tsc -p ../../packages/shared",
+    "build": "tsc -p ../../packages/shared && nest build",
     "start": "nest start",
-    "prestart:dev": "npm --prefix ../../packages/shared run build",
+    "prestart:dev": "tsc -p ../../packages/shared",
     "start:dev": "nest start --watch",
     "start:prod": "node dist/main",
     "shift:setup": "ts-node src/shift/cli.ts setup",
