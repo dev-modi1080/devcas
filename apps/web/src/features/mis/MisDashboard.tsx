@@ -32,14 +32,20 @@ import {
 import api from '../../api/client';
 import { useNavigate } from 'react-router-dom';
 import { BudgetType, formatINR } from '@cas/shared';
+import { useAuth } from '../../context/AuthContext';
 
 export const MisDashboard: React.FC = () => {
+  const { user } = useAuth();
   const [budgetType, setBudgetType] = useState<BudgetType>(BudgetType.CAPEX);
   const [data, setData] = useState<any>(null);
   const [loading, setLoading] = useState(true);
   const navigate = useNavigate();
 
   const fetchStats = (type: BudgetType) => {
+    if (!user) {
+      setLoading(false);
+      return;
+    }
     setLoading(true);
     api
       .get(`/mis/dashboard/stats?type=${type}`)
@@ -50,7 +56,7 @@ export const MisDashboard: React.FC = () => {
 
   useEffect(() => {
     fetchStats(budgetType);
-  }, [budgetType]);
+  }, [budgetType, user]);
 
   const handleTypeChange = (
     event: React.MouseEvent<HTMLElement>,

@@ -52,9 +52,9 @@ export class AuthService {
         email: user.email,
         employeeCode: user.employeeCode,
         role: user.role,
-        businessIds: user.userBusinesses.map((b) => b.businessId),
-        locationIds: user.userLocations.map((l) => l.locationId),
-        siteLocationIds: user.userSiteLocations.map((s) => s.siteLocationId),
+        businessIds: (user.userBusinesses || []).map((b) => b.businessId),
+        locationIds: (user.userLocations || []).map((l) => l.locationId),
+        siteLocationIds: (user.userSiteLocations || []).map((s) => s.siteLocationId),
       },
     };
   }
@@ -127,12 +127,12 @@ export class AuthService {
       employeeCode: user.employeeCode,
       role: user.role,
       active: user.active,
-      businesses: user.userBusinesses.map((b) => b.business),
-      locations: user.userLocations.map((l) => l.location),
-      siteLocations: user.userSiteLocations.map((s) => s.siteLocation),
-      businessIds: user.userBusinesses.map((b) => b.businessId),
-      locationIds: user.userLocations.map((l) => l.locationId),
-      siteLocationIds: user.userSiteLocations.map((s) => s.siteLocationId),
+      businesses: (user.userBusinesses || []).map((b) => b.business).filter(Boolean),
+      locations: (user.userLocations || []).map((l) => l.location).filter(Boolean),
+      siteLocations: (user.userSiteLocations || []).map((s) => s.siteLocation).filter(Boolean),
+      businessIds: (user.userBusinesses || []).map((b) => b.businessId),
+      locationIds: (user.userLocations || []).map((l) => l.locationId),
+      siteLocationIds: (user.userSiteLocations || []).map((s) => s.siteLocationId),
     };
   }
 
