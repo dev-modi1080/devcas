@@ -168,6 +168,7 @@ export async function seed(shift: ShiftService): Promise<void> {
     where: { email: 'site.user@adani.com' },
     update: {},
     create: {
+      id: '11111111-1111-4111-8111-111111111111',
       name: 'Ramesh Patel',
       email: 'site.user@adani.com',
       employeeCode: 'EMP-1001',
@@ -179,6 +180,7 @@ export async function seed(shift: ShiftService): Promise<void> {
     where: { email: 'site.supervisor@adani.com' },
     update: {},
     create: {
+      id: '22222222-2222-4222-8222-222222222222',
       name: 'Suresh Sharma',
       email: 'site.supervisor@adani.com',
       employeeCode: 'EMP-1002',
@@ -190,6 +192,7 @@ export async function seed(shift: ShiftService): Promise<void> {
     where: { email: 'bu.admin@adani.com' },
     update: {},
     create: {
+      id: '33333333-3333-4333-8333-333333333333',
       name: 'Vikram Adani',
       email: 'bu.admin@adani.com',
       employeeCode: 'EMP-1003',
@@ -201,6 +204,7 @@ export async function seed(shift: ShiftService): Promise<void> {
     where: { email: 'cas.admin@adani.com' },
     update: {},
     create: {
+      id: '44444444-4444-4444-8444-444444444444',
       name: 'Pooja Mehta',
       email: 'cas.admin@adani.com',
       employeeCode: 'EMP-1004',
