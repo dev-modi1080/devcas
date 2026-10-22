@@ -10,9 +10,21 @@ import { ApiTags, ApiOperation, ApiBearerAuth, ApiConsumes, ApiBody } from '@nes
 import { FileInterceptor } from '@nestjs/platform-express';
 import { diskStorage } from 'multer';
 import { extname, join } from 'path';
+import * as os from 'os';
+import * as fs from 'fs';
 import { FilesService } from './files.service';
 import { JwtAuthGuard } from '../auth/jwt-auth.guard';
 import { CurrentUser } from '../auth/current-user.decorator';
+
+const getUploadDir = (): string => {
+  if (process.env.UPLOAD_DIR) {
+    return process.env.UPLOAD_DIR;
+  }
+  if (process.env.VERCEL || process.env.AWS_LAMBDA_FUNCTION_NAME) {
+    return join(os.tmpdir(), 'uploads');
+  }
+  return './uploads';
+};
 
 @ApiTags('Files')
 @Controller('files')
@@ -38,7 +50,17 @@ export class FilesController {
   @UseInterceptors(
     FileInterceptor('file', {
       storage: diskStorage({
-        destination: process.env.UPLOAD_DIR || './uploads',
+        destination: (req, file, cb) => {
+          const uploadDir = getUploadDir();
+          try {
+            if (!fs.existsSync(uploadDir)) {
+              fs.mkdirSync(uploadDir, { recursive: true });
+            }
+            cb(null, uploadDir);
+          } catch (err: any) {
+            cb(err, uploadDir);
+          }
+        },
         filename: (req, file, cb) => {
           const uniqueSuffix = Date.now() + '-' + Math.round(Math.random() * 1e9);
           const ext = extname(file.originalname);

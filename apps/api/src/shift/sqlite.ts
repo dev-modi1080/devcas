@@ -6,6 +6,7 @@
 import { DatabaseSync } from 'node:sqlite';
 import * as fs from 'fs';
 import * as path from 'path';
+import * as os from 'os';
 
 export interface SqliteOptions {
   /** Absolute or relative path of the database file. */
@@ -17,6 +18,29 @@ export interface SqliteOptions {
 export function resolveDatabaseFile(): string {
   const explicit = process.env.SQLITE_PATH?.trim();
   const fromUrl = parseFileUrl(process.env.DATABASE_URL);
+
+  const isServerless = !!(process.env.VERCEL || process.env.AWS_LAMBDA_FUNCTION_NAME);
+  if (isServerless && !explicit && !fromUrl) {
+    const tmpDb = path.join(os.tmpdir(), 'cas.db');
+    try {
+      if (!fs.existsSync(tmpDb)) {
+        const candidates = [
+          path.resolve(process.cwd(), 'data', 'cas.db'),
+          path.resolve(process.cwd(), 'apps', 'api', 'data', 'cas.db'),
+        ];
+        for (const candidate of candidates) {
+          if (fs.existsSync(candidate)) {
+            fs.copyFileSync(candidate, tmpDb);
+            break;
+          }
+        }
+      }
+    } catch {
+      // ignore copy errors
+    }
+    return tmpDb;
+  }
+
   const raw = explicit || fromUrl || './data/cas.db';
 
   if (path.isAbsolute(raw)) return raw;
@@ -60,14 +84,22 @@ export class SqliteConnection {
     if (!this.memory) {
       const dir = path.dirname(this.file);
       if (dir && !fs.existsSync(dir)) {
-        fs.mkdirSync(dir, { recursive: true });
+        try {
+          fs.mkdirSync(dir, { recursive: true });
+        } catch {
+          // ignore directory creation error in read-only environments
+        }
       }
     }
 
     this.database = new DatabaseSync(this.memory ? ':memory:' : this.file, {
       enableForeignKeyConstraints: true,
     });
-    this.database.exec('PRAGMA journal_mode = WAL;');
+    try {
+      this.database.exec('PRAGMA journal_mode = WAL;');
+    } catch {
+      // ignore WAL pragma if not supported
+    }
     this.database.exec('PRAGMA synchronous = NORMAL;');
     this.database.exec('PRAGMA foreign_keys = ON;');
     return this.database;
